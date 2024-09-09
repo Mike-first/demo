@@ -1,0 +1,46 @@
+{
+  "chrome": {
+    "versions": {
+      "128.0": {
+        "image": "selenoid/chrome:128.0",
+        "port": "4444",
+        "path": "/",
+        "enableVNC": true,
+        "enableVideo": true
+      }
+    }
+  },
+  "firefox": {
+    "versions": {
+      "125.0": {
+        "image": "selenoid/firefox:125.0",
+        "port": "4444",
+        "path": "/wd/hub",
+        "enableVNC": true,
+        "enableVideo": true
+      }
+    }
+  },
+  "opera": {
+    "versions": {
+      "108.0": {
+        "image": "selenoid/opera:108.0",
+        "port": "4444",
+        "path": "/",
+        "enableVNC": true,
+        "enableVideo": true
+      }
+    }
+  },
+  "edge": {
+    "versions": {
+      "123.0": {
+        "image": "browsers/edge:123.0",
+        "port": "4444",
+        "path": "/",
+        "enableVNC": true,
+        "enableVideo": true
+      }
+    }
+  }
+}
