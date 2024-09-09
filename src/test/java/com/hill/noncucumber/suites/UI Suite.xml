@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="all UI Suites">
+    <suite-files>
+        <suite-file path="SortingTest.xml"/>
+        <suite-file path="PaginationTest.xml"/>
+        <suite-file path="CartTest.xml"/>
+    </suite-files>
+</suite>
