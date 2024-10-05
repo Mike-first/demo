@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true"
+          name="D:/work/projects/demo/src/test/java/com/hill/apiTests/ApiExampleTest.java">
+        <classes>
+            <class name="com.hill.api.ApiExampleTest">
+                <methods>
+                    <include name="touristEquipmentIsPresentTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

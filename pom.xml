@@ -26,6 +26,7 @@
         <slf4j.version>1.7.32</slf4j.version>
         <slf4j.simple.version>1.7.32</slf4j.simple.version>
         <json.version>20240303</json.version>
+        <appium.version>7.6.0</appium.version>
     </properties>
 
     <dependencies>
@@ -34,6 +35,12 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium.version}</version>
         </dependency>
 
         <!-- test -->

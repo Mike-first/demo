@@ -1,6 +1,6 @@
 package com.hill.api;
 
-import com.hill.core.PropertyReader;
+import com.hill.web.core.PropertiesWeb;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,7 +18,7 @@ public class TryApi {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"link\": \"/search/?text={value}&from_global=true\", \"query\": \"" + req + "\", \"widgetVersion\": 2}");
         Request request = new Request.Builder()
-                .url(PropertyReader.getProperty("base.url") + "api/composer-api.bx/_action/v2/getSearchTapTags")
+                .url(PropertiesWeb.getProperty("base.url") + "api/composer-api.bx/_action/v2/getSearchTapTags")
                 .method("POST", body)
                 .addHeader("Content-Type", "application/json")
                 .build();
