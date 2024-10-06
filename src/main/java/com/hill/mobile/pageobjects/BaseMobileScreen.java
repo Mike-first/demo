@@ -1,5 +1,7 @@
-package com.hill.mobile.core;
+package com.hill.mobile.pageobjects;
 
+import com.hill.mobile.core.MDManager;
+import com.hill.mobile.core.PropertiesMobile;
 import com.hill.mobile.utilities.Mobile;
 import com.hill.mobile.utilities.ScreenFactory;
 import com.hill.mobile.utilities.TimeoutsMobile;

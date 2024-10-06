@@ -1,6 +1,5 @@
 package com.hill.mobile.pageobjects;
 
-import com.hill.mobile.core.BaseMobileScreen;
 import io.appium.java_client.MobileElement;
 import org.openqa.selenium.support.FindBy;
 

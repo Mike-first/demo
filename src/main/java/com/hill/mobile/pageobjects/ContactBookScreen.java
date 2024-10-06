@@ -1,6 +1,5 @@
 package com.hill.mobile.pageobjects;
 
-import com.hill.mobile.core.BaseMobileScreen;
 import com.hill.mobile.utilities.Mobile;
 import com.hill.mobile.utilities.TimeoutsMobile;
 import io.appium.java_client.MobileElement;

@@ -1,6 +1,5 @@
 package com.hill.mobile.pageobjects;
 
-import com.hill.mobile.core.BaseMobileScreen;
 import com.hill.mobile.pageobjects.elements.DropdownLabel;
 import com.hill.mobile.utilities.Mobile;
 import com.hill.mobile.utilities.TimeoutsMobile;
