@@ -1,13 +1,13 @@
 package com.hill.mobile;
 
-import com.hill.mobile.pageobjects.HomeMobileScreen;
+import com.hill.mobile.screenobjects.HomeScreen;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class PhoneBookTest extends BaseMobileTest {
     @Test
     public void contactBookIsEmpty() {
-        Assert.assertTrue(currentPage(HomeMobileScreen.class)
+        Assert.assertTrue(currentPage(HomeScreen.class)
                         .contacts()
                         .isEmpty(),
                 "contact book should be empty");
@@ -15,7 +15,7 @@ public class PhoneBookTest extends BaseMobileTest {
 
     @Test
     public void contactCreated() {
-        currentPage(HomeMobileScreen.class).contacts()
+        currentPage(HomeScreen.class).contacts()
                 .createContact()
                 .feelInfo()
                 .withFirstName("John")

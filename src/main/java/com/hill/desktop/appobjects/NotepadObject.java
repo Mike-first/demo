@@ -1,6 +1,6 @@
 package com.hill.desktop.appobjects;
 
-import com.hill.desktop.core.ADManager;
+import com.hill.desktop.core.DDManager;
 import com.hill.desktop.utilities.DT;
 import io.appium.java_client.windows.WindowsElement;
 import org.openqa.selenium.Keys;
@@ -21,7 +21,7 @@ public class NotepadObject {
 
     public void close() {
         DT.Get.elementByName("Close").click();
-        ADManager.getDriver().quit();
+        DDManager.tearDown();
     }
 
     public NotepadObject file() {

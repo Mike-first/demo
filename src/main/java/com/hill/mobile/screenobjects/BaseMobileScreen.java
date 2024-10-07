@@ -1,4 +1,4 @@
-package com.hill.mobile.pageobjects;
+package com.hill.mobile.screenobjects;
 
 import com.hill.mobile.core.MDManager;
 import com.hill.mobile.core.PropertiesMobile;

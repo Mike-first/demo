@@ -4,6 +4,7 @@ import com.hill.mobile.core.MDManager;
 import com.hill.mobile.core.PropertiesMobile;
 import com.hill.mobile.utilities.ScreenFactory;
 import com.hill.mobile.utilities.bash.CommandRunner;
+import com.hill.mobile.utilities.bash.Commands;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import org.testng.annotations.AfterClass;
@@ -23,7 +24,7 @@ public class BaseMobileTest {
     @BeforeClass
     public void setup() {
         factory = new ScreenFactory(driver());
-        if (!isDebug()) CommandRunner.runEventCmd("home");
+        if (!isDebug()) CommandRunner.runAdb(Commands.ADB.HOME);
     }
 
     @AfterClass

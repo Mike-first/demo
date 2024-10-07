@@ -1,4 +1,4 @@
-package com.hill.api;
+package com.hill.api.rest;
 
 import com.hill.web.core.PropertiesWeb;
 import okhttp3.*;

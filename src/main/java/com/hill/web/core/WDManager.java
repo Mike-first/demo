@@ -1,8 +1,13 @@
 package com.hill.web.core;
 
+import com.hill.commonutilities.CU;
+import com.hill.mobile.utilities.bash.CommandRunner;
+import com.hill.mobile.utilities.bash.Commands;
 import com.hill.web.utilities.constants.PathStorage;
 import com.hill.web.utilities.constants.Timeouts;
+import com.hill.web.utilities.scripts.ScriptRunnerWeb;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -11,8 +16,6 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class WDManager {
-
-    private static final Logger logger = LoggerFactory.getLogger(WDManager.class);
+//    private static final Logger log = LoggerFactory.getLogger(WDManager.class);
 
     private static WebDriver driver;
     private static final Map<String, Object> preferences;
@@ -38,7 +41,7 @@ public class WDManager {
         preferences.put("safebrowsing.enabled", "false");
     }
 
-    public static WebDriver setDriver(String browserName) {
+    private static WebDriver setDriver(String browserName) {
         switch (browserName.toLowerCase()) {
 
             case "chrome": {
@@ -103,7 +106,8 @@ public class WDManager {
             }
 
             case "selenoid": {
-                ChromeOptions options = new ChromeOptions(); //todo 3 times new ChromeOptions > to separate method
+                statusCheck();
+                ChromeOptions options = new ChromeOptions();
                 options.setCapability("browserVersion", "127.0");
 
                 Map<String, Object> selenoidOptions = new HashMap<>();
@@ -139,7 +143,7 @@ public class WDManager {
     }
 
     public static void tearDown() {
-        logger.debug("WDManager.tearDown()");
+        log.debug("WDManager.tearDown()");
         driver.quit();
         driver = null;
     }
@@ -148,5 +152,15 @@ public class WDManager {
         String browser = PropertiesWeb.getProperty("browser");
         if (driver == null) driver = setDriver(browser);
         return driver;
+    }
+
+    private static void statusCheck() {
+        if (!ScriptRunnerWeb.isSelenoidOk()) {
+            log.info("Starting Selenoid");
+            CommandRunner.runBash(Commands.Docker.DC_UP_D);
+            CU.Wait.forSeconds(Timeouts.SELENOID_START);
+        }
+        if (ScriptRunnerWeb.isSelenoidOk()) log.info("Selenoid: Ok");
+        else throw new RuntimeException("Selenoid starting failure");
     }
 }

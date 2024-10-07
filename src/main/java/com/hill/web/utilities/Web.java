@@ -6,14 +6,13 @@ import com.hill.web.pageobjects.blocks.Header;
 import com.hill.web.utilities.constants.Messages;
 import com.hill.web.utilities.constants.PathStorage;
 import com.hill.web.utilities.constants.Timeouts;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 
 import java.io.ByteArrayInputStream;
@@ -27,13 +26,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+@Slf4j
 public class Web {
 
     private Web() {
         throw new IllegalStateException(Messages.UTILITY_CLASS);
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(Web.class);
+//    private static final Logger log = LoggerFactory.getLogger(Web.class);
 
     public static WebDriver driver() {
 //        return WebDriverRunner.getWebDriver(); //for Selenide
@@ -85,7 +85,7 @@ public class Web {
         }
 
         public static WebElement forElementToBeUnderHeader(WebElement e) {
-            logger.info(String.format("User scrolls until %s to be under header ", Get.locator(e)));
+            log.info(String.format("User scrolls until %s to be under header ", Get.locator(e)));
             int previousPosition = e.getLocation().y;
             int offset = previousPosition - 20; //- NavigationPage.getNavigationBarBottomPosition()
             jse().executeScript(String.format("window.scrollBy(0, %d)", offset), "");
@@ -101,7 +101,7 @@ public class Web {
         }
 
         public static WebElement scrollForElementToBeUnderHeader(WebElement e) {
-            logger.info(String.format("User scrolls until %s to be under header ", Get.locator(e)));
+            log.info(String.format("User scrolls until %s to be under header ", Get.locator(e)));
             int previousPosition = e.getLocation().y;
             int offset = previousPosition - Header.getBottomPosition() - 20;
             jse().executeScript(String.format("window.scrollBy(0, %d)", offset), "");
@@ -224,7 +224,7 @@ public class Web {
             try {
                 until(message, c, timeout);
             } catch (Exception e) {
-                logger.info(message);
+                log.info(message);
             }
         }
 
@@ -285,11 +285,11 @@ public class Web {
                     log.append("Complex click successful.");
                 } catch (Exception exComplex) {
                     log.append("Click failed.");
-                    logger.info(log.toString());
+                    Web.log.info(log.toString());
                     throw new RuntimeException("click element '" + element + "' failed");
                 }
             }
-            logger.info(log.toString());
+            Web.log.info(log.toString());
             Wait.forMillis(100);
         }
 
@@ -418,61 +418,54 @@ public class Web {
         }
 
         public static String justOpenedTabGetUrlAndClose(WebElement e) {
-            String startTab = driver().getWindowHandle();//сохраним первоначальную вкладку. она имеет право быть не_единственной / не_первой
-            String newTab = null;//обявим переменную под вкладку, которая будет открыта по клику на элемент
-            Set<String> oldTabs = driver().getWindowHandles();//возьмем сет всех вкладок открытых до
-            e.click();//кликнем
-            Set<String> newTabs = driver().getWindowHandles();//возьмем сет всех вкладок открытых после
+            String startTab = driver().getWindowHandle();
+            String newTab = null;
+            Set<String> oldTabs = driver().getWindowHandles();
+            e.click();
+            Set<String> newTabs = driver().getWindowHandles();
             if (newTabs.size() != oldTabs.size() + 1) {
-                Assert.fail("MORE THAN ONE TAB WAS OPENED");//ожидаем, что вкладок стало на одну больше
+                Assert.fail("MORE THAN ONE TAB WAS OPENED");
             }
             for (String tab : newTabs) {
                 newTab = tab;
-                //find new tab
                 if (!oldTabs.contains(newTab)) {
                     break;
                 }
             }
-            driver().switchTo().window(newTab);//переключились на новую вкладку
-            String result = driver().getCurrentUrl();//взяли УРЛ
+            driver().switchTo().window(newTab);
+            String result = driver().getCurrentUrl();
             driver().close();
             driver().switchTo().window(startTab);
             return result;
-        }//target="blank", если ходить по вкладкам неудобно
+        }
 
+        //todo refactor methods above and under
+        public static String[] openNewTab(WebElement e) {
+            //Assert.assertTrue(e.getAttribute(KW.TARGET).contains("blank"));
+            String startTab = driver().getWindowHandle();
+            String newTab = null;
+            Set<String> oldTabs = driver().getWindowHandles();
+            e.click();
+            Set<String> newTabs = driver().getWindowHandles();
+            if (newTabs.size() != oldTabs.size() + 1) {
+                Assert.fail("MORE THAN ONE TAB WAS OPENED");
+            }
+            for (String tab : newTabs) {
+                newTab = tab;
+                if (!oldTabs.contains(newTab)) {
+                    break;
+                }
+            }
+            driver().switchTo().window(newTab);
+            return new String[]{startTab, newTab};
+        }
 
         public static String[] openNewTab(String path) {
-        /*
-        передаем в метод путь на элемент, который откроет новую вкладку по клику
-        метод откроет новую вкладку, переключит на нее фокус
-        вернет массив [старая, новая] вкладки
-        */
             return openNewTab(driver().findElement(By.xpath(path)));
         }
 
         public static String[] openNewTab(By locator) {
             return openNewTab(driver().findElement(locator));
-        }
-
-        public static String[] openNewTab(WebElement e) {
-            // можно проверять сразу, собирается ли что-то открываться в новой вкладке или нет, но в таком случае мотод съест только ссылку, а у нас может быть что-то вложенное в ссылку млм обернутое вокруг
-            //Assert.assertTrue(e.getAttribute(KW.TARGET).contains("blank"));
-            String startTab = driver().getWindowHandle();//сохраним первоначальную вкладку. она имеет право быть не_единственной / не_первой
-            String newTab = null;//обявим переменную под вкладку, которая будет открыта по клику на элемент
-            Set<String> oldTabs = driver().getWindowHandles();//возьмем сет всех вкладок открытых до
-            e.click();//кликнем
-            Set<String> newTabs = driver().getWindowHandles();//возьмем сет всех вкладок открытых после
-            if (newTabs.size() != oldTabs.size() + 1) {
-                Assert.fail("MORE THAN ONE TAB WAS OPENED");//ожидаем, что вкладок стало на одну больше
-            }
-            for (String tab : newTabs) {
-                newTab = tab;//нашли вкладку которой раньше не было
-                if (!oldTabs.contains(newTab)) {
-                    break;
-                }
-            }
-            driver().switchTo().window(newTab);//переключились на новую вкладку
-            return new String[]{startTab, newTab};
         }
 
         public static void slide(WebElement drag, WebElement drop) {
@@ -646,7 +639,7 @@ public class Web {
             for (Map.Entry<String, ArrayList<String>> entry : map.entrySet()) {
                 String key = entry.getKey();
                 ArrayList<String> val = entry.getValue();
-                logger.info(String.format("%s=%s", key, val));
+                log.info(String.format("%s=%s", key, val));
             }
         }
 
@@ -691,10 +684,10 @@ public class Web {
         public static void checkLinkThisTab(WebElement e, String href, boolean debug) {
             //for debug
             if (debug) {
-                logger.info(String.format("href - %s", (e.getAttribute(KW.HREF).equals(href) ? true : e.getAttribute(KW.HREF))));
-                logger.info(String.format("isDisplayed - %s", e.isDisplayed()));
-                logger.info(String.format("isEnabled - %s", e.isEnabled()));
-                logger.info(String.format("!target:blank - %s", !e.getAttribute(KW.TARGET).contains(KW.BLANK)));
+                log.info(String.format("href - %s", (e.getAttribute(KW.HREF).equals(href) ? true : e.getAttribute(KW.HREF))));
+                log.info(String.format("isDisplayed - %s", e.isDisplayed()));
+                log.info(String.format("isEnabled - %s", e.isEnabled()));
+                log.info(String.format("!target:blank - %s", !e.getAttribute(KW.TARGET).contains(KW.BLANK)));
             }
             checkLinkThisTab(e, href);
         }
@@ -713,10 +706,10 @@ public class Web {
 
         public static void checkLinkNewTab(WebElement e, String href, boolean debug) {
             if (debug) {
-                logger.info(String.format("href - %s", (e.getAttribute(KW.HREF).equals(href) ? true : e.getAttribute(KW.HREF))));
-                logger.info(String.format("isDisplayed - %s", e.isDisplayed()));
-                logger.info(String.format("isEnabled - %s", e.isEnabled()));
-                logger.info(String.format("!target:blank - %s", !e.getAttribute(KW.TARGET).contains(KW.BLANK)));
+                log.info(String.format("href - %s", (e.getAttribute(KW.HREF).equals(href) ? true : e.getAttribute(KW.HREF))));
+                log.info(String.format("isDisplayed - %s", e.isDisplayed()));
+                log.info(String.format("isEnabled - %s", e.isEnabled()));
+                log.info(String.format("!target:blank - %s", !e.getAttribute(KW.TARGET).contains(KW.BLANK)));
             }
             checkLinkNewTab(e, href);
         }
@@ -752,7 +745,7 @@ public class Web {
                 + FileSystems.getDefault().getSeparator() + fileName
                 + Dates.now().timeStamp()
                 + ".png";
-        logger.info(String.format("Saved screen: %s", targetPath));
+        log.info(String.format("Saved screen: %s", targetPath));
         FileUtils.copy(srcFile.toPath(), Paths.get(targetPath));
     }
 
@@ -770,7 +763,7 @@ public class Web {
     }
 
     public static ByteArrayInputStream screenAsByteArray() {
-        logger.info("Take screenshot");
+        log.info("Take screenshot");
         return new ByteArrayInputStream(((TakesScreenshot) driver()).getScreenshotAs(OutputType.BYTES));
     }
 

@@ -1,20 +1,28 @@
 package com.hill.mobile.core;
 
+
+import com.hill.commonutilities.CU;
+import com.hill.mobile.utilities.ConstMobile;
+import com.hill.mobile.utilities.TimeoutsMobile;
+import com.hill.mobile.utilities.bash.CommandRunner;
+import com.hill.mobile.utilities.bash.Commands;
+import com.hill.mobile.utilities.bash.RunHelperMobile;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
+@Slf4j
 public class MDManager {
     private static AppiumDriver<MobileElement> driver;
-    private static final Logger logger = LoggerFactory.getLogger(MDManager.class);
+//    private static final Logger log = LoggerFactory.getLogger(MDManager.class);
 
-    public static AppiumDriver setDriver(String device) {
+    private static AppiumDriver<MobileElement> setDriver(String device) {
+        statusCheck();
         try {
             switch (device) {
 
@@ -37,16 +45,34 @@ public class MDManager {
 
             }
         } catch (MalformedURLException e) {
-            logger.error("Session was not created");
+            log.error("Session was not created");
         }
 
         return driver;
     }
 
 
-    public static AppiumDriver getDriver() {
+    public static AppiumDriver<MobileElement> getDriver() {
         String browser = PropertiesMobile.getProperty("device");
         if (driver == null) driver = setDriver(browser);
         return driver;
+    }
+
+    private static void statusCheck() {
+        if (!RunHelperMobile.isAppiumOk()) {
+            log.info("Starting Appium server");
+            CommandRunner.runBash(String.format(Commands.Bash.APPIUM_RUN, ConstMobile.LOG_DIR));
+            CU.Wait.forSeconds(TimeoutsMobile.APPIUM_START);
+        }
+        if (RunHelperMobile.isAppiumOk()) log.info("Appium server: OK");
+        else throw new RuntimeException("Appium server starting failure");
+
+        if (!RunHelperMobile.isEmulatorOk()) {
+            log.info("Starting Emulator");
+            CommandRunner.runBash(String.format(Commands.Bash.EMULATOR_RUN, ConstMobile.LOG_DIR));
+            CU.Wait.forSeconds(TimeoutsMobile.EMULATOR_START);
+        }
+        if (RunHelperMobile.isEmulatorOk()) log.info("Emulator: OK");
+        else throw new RuntimeException("Emulator starting failure");
     }
 }

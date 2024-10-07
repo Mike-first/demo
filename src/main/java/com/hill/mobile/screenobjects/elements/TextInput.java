@@ -1,4 +1,4 @@
-package com.hill.mobile.pageobjects.elements;
+package com.hill.mobile.screenobjects.elements;
 
 import io.appium.java_client.MobileElement;
 

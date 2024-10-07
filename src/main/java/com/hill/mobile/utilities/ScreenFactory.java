@@ -27,7 +27,7 @@ public class ScreenFactory {
             for (Field field : fields) {
                 if (field.isAnnotationPresent(AndroidFindBy.class)) {
                     AndroidFindBy androidFindBy = field.getAnnotation(AndroidFindBy.class);
-                    By by = getByFromAndroidFindBy(androidFindBy); // Получаем By объект
+                    By by = getByFromAndroidFindBy(androidFindBy);
                     field.setAccessible(true);
                     field.set(screen, driver.findElement(by));
                 }

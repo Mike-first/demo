@@ -1,4 +1,4 @@
-package com.hill.mobile.pageobjects.elements;
+package com.hill.mobile.screenobjects.elements;
 
 import com.hill.mobile.utilities.Mobile;
 import com.hill.mobile.utilities.TimeoutsMobile;

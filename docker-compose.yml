@@ -1,4 +1,3 @@
-version: '3'
 services:
   selenoid:
     container_name: selenoid-24

@@ -1,5 +1,6 @@
 package com.hill.api;
 
+import com.hill.api.rest.TryApi;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

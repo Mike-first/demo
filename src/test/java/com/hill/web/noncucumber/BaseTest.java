@@ -11,7 +11,7 @@ import com.hill.web.utilities.Factory;
 import com.hill.web.utilities.FileUtils;
 import com.hill.web.utilities.Web;
 import com.hill.web.utilities.constants.PathStorage;
-import com.hill.web.utilities.scripts.ScriptRunner;
+import com.hill.web.utilities.scripts.ScriptRunnerWeb;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import org.slf4j.Logger;
@@ -42,8 +42,8 @@ public abstract class BaseTest {
     public void afterAll() {
         logger.debug("@AfterSuite.afterAll().tearDown()");
         WDManager.tearDown();
-        logger.info(ScriptRunner.generateAllureReport());
-        logger.info(ScriptRunner.archiveReport());
+        logger.info(ScriptRunnerWeb.generateAllureReport());
+        logger.info(ScriptRunnerWeb.archiveReport());
     }
 
     @BeforeClass(alwaysRun = true)

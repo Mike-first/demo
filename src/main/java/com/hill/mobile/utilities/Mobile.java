@@ -4,12 +4,11 @@ import com.hill.mobile.core.MDManager;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,9 +16,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+@Slf4j
 public class Mobile {
 
-    private static final Logger logger = LoggerFactory.getLogger(Mobile.class);
+//    private static final Logger log = LoggerFactory.getLogger(Mobile.class);
 
     public static AppiumDriver<MobileElement> driver() {
         return MDManager.getDriver();
@@ -105,7 +105,7 @@ public class Mobile {
             try {
                 until(message, c, timeout);
             } catch (Exception e) {
-                logger.info(message);
+                log.info(message);
             }
         }
     }

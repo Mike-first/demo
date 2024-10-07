@@ -6,6 +6,8 @@ public interface TimeoutsMobile {
 
     float FACTOR = Float.parseFloat(PropertiesMobile.getProperty("timeouts.factor"));
 
+    int EMULATOR_START = (int) (10 * FACTOR);
+    int APPIUM_START = (int) (5 * FACTOR);
     int SCROLL = (int) (10 * FACTOR);
     int ELEMENT_VISIBILITY = (int) (15 * FACTOR);
     int CLICK = (int) (15 * FACTOR);

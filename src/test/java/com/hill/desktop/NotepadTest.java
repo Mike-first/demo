@@ -16,7 +16,8 @@ public class NotepadTest extends DesktopBaseTest {
     @Test
     public void helloWorld() {
         notepad.type("hello world!")
-                .file().saveAs(filePath)
+                .file()
+                .saveAs(filePath)
                 .close();
         DT.Wait.forMillis(300);
         Assert.assertTrue(new File(filePath).exists());
@@ -26,7 +27,7 @@ public class NotepadTest extends DesktopBaseTest {
     public void clear() {
         File f = new File(filePath);
         if (f.exists()) {
-            System.out.println(String.format("File '%s' removed: %s", filePath, f.delete()));
+            logger.info(String.format("File '%s' removed: %s", filePath, f.delete()));
         }
     }
 }

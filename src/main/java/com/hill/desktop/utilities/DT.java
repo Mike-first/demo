@@ -1,6 +1,6 @@
 package com.hill.desktop.utilities;
 
-import com.hill.desktop.core.ADManager;
+import com.hill.desktop.core.DDManager;
 import com.hill.mobile.utilities.Messages;
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.WindowsElement;
@@ -17,7 +17,7 @@ import java.util.concurrent.Callable;
 public class DT {
 
     protected static WindowsDriver<WindowsElement> driver() {
-        return ADManager.getDriver();
+        return DDManager.getDriver();
     }
 
     public static Actions acts() {

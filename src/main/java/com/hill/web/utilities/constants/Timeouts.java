@@ -19,4 +19,5 @@ public interface Timeouts {
     int PAGE_LOADING = (int) (30 * FACTOR);
     int JS_EXECUTION = (int) (15 * FACTOR);
     int CALENDAR = (int) (3 * FACTOR);
+    int SELENOID_START = (int) (5 * FACTOR);
 }
